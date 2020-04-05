@@ -23,11 +23,11 @@
                 
             </div>
             <div class="col-md-8">
-                <form action="/update/{{tasky.id}}" method="POST">
+                <form action="/update/{{task.['task']}}" method="POST">
                     <div class="form-group">
                       <label for="">Task</label>
-                      <input type="text" name="task" id="" class="form-control" placeholder="" aria-describedby="helpId" value="{{tasky.task}}">
-                      <small id="helpId" class="text-muted">Enter Task</small><br>
+                      <input type="text" name="task" id="" class="form-control" placeholder="" aria-describedby="helpId" value="{{task.['task']}}">
+                      <small id="helpId" class="text-muted">Update Task</small><br>
                       <input type="submit" value="Update" class="btn btn-primary float-right mb-4">
                     </div>
                 </form>
