@@ -23,7 +23,7 @@
                 
             </div>
             <div class="col-md-8">
-                <form action="/update/{{task.['task']}}" method="POST">
+                <form action="/update/{{task.['_id']}}" method="POST">
                     <div class="form-group">
                       <label for="">Task</label>
                       <input type="text" name="task" id="" class="form-control" placeholder="" aria-describedby="helpId" value="{{task.['task']}}">

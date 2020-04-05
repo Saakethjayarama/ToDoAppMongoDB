@@ -1,13 +1,13 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect 
 import pymongo
 from datetime import datetime
 from DBUtil import GetDBUtil
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 
 
-id = 0
 
 class ToDoDaoImpl:
     def __init__(self):
@@ -26,9 +26,6 @@ class ToDoDaoImpl:
         return self.collection_todo.find()
     def get(self, task):
         return self.collection_todo.find_one({"task": task})
-    def getId(self):
-        self.id = self.id + 1
-        return self.id
     
 
 
@@ -40,28 +37,28 @@ todoDaoImpl = ToDoDaoImpl()
 def index():
     if request.method == "POST":
         content = request.form['task']
-        todoDaoImpl.add({"task": content, "dateCreated": datetime.utcnow(), "id": todoDaoImpl.getId()})
+        todoDaoImpl.add({"task": content, "dateCreated": datetime.utcnow()})
         return render_template("index.html", tasks=todoDaoImpl.view())
     else:
         
         tasks = todoDaoImpl.view()
-        return render_template('index.html',content=tasks)
+        return render_template('index.html',tasks=tasks)
 
 @app.route('/delete/<string:id>')
 def delete(id):
-    x = todoDaoImpl.rem({"id": id})
+    x = todoDaoImpl.rem({"_id": ObjectId(id)})
     tasks = todoDaoImpl.view()
-    return render_template("index.html", content=tasks)
+    return render_template("index.html", tasks=tasks)
 
 
 @app.route('/update/<string:id>', methods=['GET', 'POST'])
 def update(id):
     if request.method == 'POST':
         content = request.form['task']
-        query = {"id": id}
+        query = {"_id": ObjectId(id)}
         update = {"$set": {"task": content}}
         tasks = todoDaoImpl.view()
-        return render_template("index.html", content=tasks)
+        return render_template("index.html", tasks=tasks)
 
     else:
         x = todoDaoImpl.get(id)
