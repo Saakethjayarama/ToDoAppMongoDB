@@ -20,7 +20,7 @@ class ToDoDaoImpl:
         self.collection_todo.insert_one(task)
 
     def rem(self, id):
-        self.collection_todo.delete_one({ "id": id })
+        self.collection_todo.delete_one({ "_id": id })
 
     def view(self):
         return self.collection_todo.find()
@@ -46,7 +46,7 @@ def index():
 
 @app.route('/delete/<string:id>')
 def delete(id):
-    x = todoDaoImpl.rem({"_id": ObjectId(id)})
+    x = todoDaoImpl.rem(ObjectId(id))
     tasks = todoDaoImpl.view()
     return render_template("index.html", tasks=tasks)
 
